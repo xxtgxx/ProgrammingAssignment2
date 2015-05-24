@@ -1,25 +1,34 @@
-makeVector <- function(x = numeric()) {
+
+# make and store a (cache) matrix 
+# then hold the cached value or NULL if nothing is cached
+makeCacheMatrix <- function(x = numeric()) {
   m <- NULL
-  set <- function(y) {
+  setMatrix <- function(y) {
     x <<- y
     m <<- NULL
   }
-  get <- function() x
-  setinverse <- function(inverse) m <<- inverse
-  getinverse <- function() m
-  list(set = set, get = get,
-       setinverse = setinverse,
-       getinverse = getinverse)
+  
+  # get/return a stored matrix and cache values
+  getMatrix <- function() x
+  setinversed <- function(inverse) m <<- inverse 
+  getinversed <- function() m
+  list(setMatrix = setMatrix, getMatrix = getMatrix,
+       setinversed = setinversed,
+       getinversed = getinversed)
 }
 
+# solve for the inverse of the matrix above
 cachesolve <- function(x, ...) {
-  inv <- x$getinverse()
+  
+  # get the value that was cached 
+  inv <- x$getinverse()    
   if(!is.null(inv)) {
     message("Getting Cached Data")
-    return(inv)
+    return(inv)     
   }
   data <- x$get()
-  inv <- solve(data)
+  inv <- solve(data)  
   x$setinverse(inv)
+  # returns the inverse
   inv
 }
